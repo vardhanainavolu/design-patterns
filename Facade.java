@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 public class Facade {
 
@@ -12,18 +13,62 @@ public class Facade {
 	private ClassProductList theProductList;
 
 	private Person thePerson;
-	public boolean login(String user, String pwd) {
-		try {
-			File myObj = new File("BuyerInfo.txt");
-			Scanner myReader = new Scanner(myObj);
-			while (myReader.hasNextLine()) {
-				String data = myReader.nextLine();
-				System.out.println(data);
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
+	}
+
+	public Product getTheSelectedProduct() {
+		return theSelectedProduct;
+	}
+
+	public void setTheSelectedProduct(Product theSelectedProduct) {
+		this.theSelectedProduct = theSelectedProduct;
+	}
+
+	public int getnProductCategory() {
+		return nProductCategory;
+	}
+
+	public void setnProductCategory(int nProductCategory) {
+		this.nProductCategory = nProductCategory;
+	}
+
+	public ClassProductList getTheProductList() {
+		return theProductList;
+	}
+
+	public void setTheProductList(ClassProductList theProductList) {
+		this.theProductList = theProductList;
+	}
+
+	public Person getThePerson() {
+		return thePerson;
+	}
+
+	public void setThePerson(Person thePerson) {
+		this.thePerson = thePerson;
+	}
+
+	public boolean login(String userName, String pwd, ArrayList<UserInfoItem> users) {
+		UserInfoItem user;
+		for(int i = 0; i < users.size(); ++i) {
+			user = users.get(i);
+			if(user.getUser().equals(userName)) {
+				if(user.getPassword().equals(pwd)) {
+					if(user.isState() == false) {
+						this.setThePerson(new Buyer());
+					} else {
+						this.setThePerson(new Seller());
+					}
+					System.out.println("Successfully logged in!");
+					return true;
+				}
 			}
-			myReader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
 		}
 		return false;
 	}

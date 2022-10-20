@@ -4,6 +4,15 @@ public class UserInfoItem {
 
     private String password;
 
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    private boolean state;
     public String getUser() {
         return user;
     }
@@ -20,8 +29,9 @@ public class UserInfoItem {
         this.password = password;
     }
 
-    public UserInfoItem(String user, String pwd) {
+    public UserInfoItem(String user, String pwd, boolean state) {
         setPassword(pwd);
         setUser(user);
+        setState(state);
     }
 }
