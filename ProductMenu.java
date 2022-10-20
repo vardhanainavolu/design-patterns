@@ -12,4 +12,6 @@ public interface ProductMenu {
 
 	public abstract void showComboxes();
 
+	public abstract void setProductList(ClassProductList productList);
+
 }

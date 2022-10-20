@@ -60,7 +60,7 @@ public class Facade {
 			user = users.get(i);
 			if(user.getUser().equals(userName)) {
 				if(user.getPassword().equals(pwd)) {
-					if(user.isState() == false) {
+					if(user.isState() == true) {
 						this.setThePerson(new Buyer());
 					} else {
 						this.setThePerson(new Seller());
@@ -101,8 +101,8 @@ public class Facade {
 
 	}
 
-	public void createProductList() {
-
+	public void createProductList(ClassProductList classProductList) {
+		this.setTheProductList(classProductList);
 	}
 
 	public void AttachProductToUser() {

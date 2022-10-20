@@ -1,6 +1,6 @@
 public class Seller extends Person {
 
-	public void showMenu() {
+	public void showMenu(Facade facade) {
 		System.out.println("Seller");
 	}
 

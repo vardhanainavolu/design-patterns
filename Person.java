@@ -1,6 +1,6 @@
 public class Person {
 
-	public void showMenu() {
+	public void showMenu(Facade facade) {
 
 	}
 

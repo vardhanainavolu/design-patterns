@@ -1,7 +1,14 @@
 public class MeatProductMenu implements ProductMenu {
 
+	private ClassProductList productList;
 	public void showMenu() {
-
+		ProductIterator productIterator = productList.getProductIterator();
+		while(productIterator.hasNext()) {
+			if(productIterator.getProduct().isProductType()) {
+				System.out.println(productIterator.getProduct().getProductName());
+			}
+			productIterator = productIterator.Next();
+		}
 	}
 
 	public void showAddButton() {
@@ -24,4 +31,7 @@ public class MeatProductMenu implements ProductMenu {
 
 	}
 
+	public void setProductList(ClassProductList productList) {
+		this.productList = productList;
+	}
 }
