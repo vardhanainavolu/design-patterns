@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 public class Facade {
 
 	private int userType;
@@ -9,8 +12,19 @@ public class Facade {
 	private ClassProductList theProductList;
 
 	private Person thePerson;
-
-	public boolean login() {
+	public boolean login(String user, String pwd) {
+		try {
+			File myObj = new File("BuyerInfo.txt");
+			Scanner myReader = new Scanner(myObj);
+			while (myReader.hasNextLine()) {
+				String data = myReader.nextLine();
+				System.out.println(data);
+			}
+			myReader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
 		return false;
 	}
 
