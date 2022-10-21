@@ -38,7 +38,7 @@ public class main {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] parts = data.split(":");
-                if(parts[0].equals("meat")) {
+                if(parts[0].equals("Meat")) {
                     product = new Product(true, parts[1]);
                 } else {
                     product = new Product(false, parts[1]);
@@ -47,18 +47,18 @@ public class main {
             }
             myReader.close();
             facade.setTheProductList(productList);
-            ProductIterator productIterator = productList.getProductIterator();
-            System.out.println("out:"+productIterator.getProduct().getProductName());
-            System.out.println("out:"+productIterator.hasNext());
+//            ProductIterator productIterator = facade.getTheProductList().getProductIterator();
+//            System.out.println("out:"+productIterator.getProduct().getProductName());
+//            System.out.println("out:"+productIterator.hasNext());
 //            if(productIterator == null) {
 //                productIterator = new ProductIterator();
 //            }
-            while(productIterator.hasNext()) {
-                if(productIterator.getProduct().isProductType() == false) {
-                    System.out.println(productIterator.getProduct().getProductName());
-                }
-                productIterator = productIterator.Next();
-            }
+//            while(productIterator != null) {
+//                if(productIterator.getProduct().isProductType() == false) {
+//                    System.out.println(productIterator.getProduct().getProductName());
+//                }
+//                productIterator = productIterator.Next();
+//            }
             Scanner read = new Scanner(System.in);
             System.out.println("Enter User Name:");
             String name = read.next();
@@ -66,7 +66,6 @@ public class main {
             String pwd = read.next();
             boolean loginStatus = facade.login(name, pwd, users);
             if (loginStatus) {
-//                facade.getThePerson();
                 System.out.println("Press 1 for Meat menu");
                 System.out.println("Press 2 for Produce menu");
                 Scanner scanner = new Scanner(System.in);

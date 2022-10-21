@@ -3,7 +3,7 @@ public class MeatProductMenu implements ProductMenu {
 	private ClassProductList productList;
 	public void showMenu() {
 		ProductIterator productIterator = productList.getProductIterator();
-		while(productIterator.hasNext()) {
+		while(productIterator != null) {
 			if(productIterator.getProduct().isProductType()) {
 				System.out.println(productIterator.getProduct().getProductName());
 			}

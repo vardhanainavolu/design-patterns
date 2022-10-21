@@ -25,10 +25,10 @@ public class ClassProductList {
 		if(iterator.hasNext()) {
 			newElement.setNext(iterator);
 		}
-		iterator.setHasNext(true);
+		newElement.setHasNext(true);
 		System.out.println(newElement.getProduct().getProductName());
-		if(newElement.hasNext())
-			System.out.println(" next:"+newElement.Next().getProduct().getProductName());
+//		if(newElement.hasNext())
+//			System.out.println(" next:"+newElement.Next().getProduct().getProductName());
 		this.setProductIterator(newElement);
 	}
 
