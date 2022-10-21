@@ -36,10 +36,10 @@ public class ReminderVisitor extends NodeVisitor {
 //			System.out.println("Inside facade 2:"+earlyOffer.getProduct().getProductName());
 		offeringIterator = offeringList.getOfferingIterator();
 		if(offeringIterator == null) {
-			return new Object[] {offeringList, null};
+			return new Object[] {offeringList, null, null};
 		}
 		if(earlyOffer == offeringIterator.getOffering()) {
-//			System.out.println("Inside facade 3:"+earlyOffer.getProduct().getProductName());
+//			System.out.println("Removed offer:"+earlyOffer.getProduct().getProductName()+" as it is expired.");
 			offeringList.setOfferingIterator(offeringIterator.Next());
 		} else {
 			while (earlyOffer != null && offeringIterator.getOffering() != earlyOffer) {
@@ -50,8 +50,9 @@ public class ReminderVisitor extends NodeVisitor {
 		}
 //		System.out.println("Inside facade 3");
 		if(earlyOffer == null) {
-			return new Object[]{offeringList, null};
+			return new Object[]{offeringList, null, null};
 		}
+		System.out.println("Removed offer:"+earlyOffer.getProduct().getProductName()+" as it is expired.");
 		ArrayList<Object []> bids = earlyOffer.getBids();
 		Integer min = 1000000;
 		UserInfoItem target = null;
