@@ -6,6 +6,38 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class main {
+
+    public static Facade Session(String name, String pwd, Facade facade, ArrayList<UserInfoItem> users, UserInfoItem loginStatus) throws ParseException {
+        OfferingList offeringList = facade.getOfferingList();
+        if(offeringList == null) {
+            offeringList = new OfferingList();
+        }
+        facade.setUserType(loginStatus.isState());
+        System.out.println("Press 1 for Meat menu");
+        System.out.println("Press 2 for Produce menu");
+        Scanner scanner = new Scanner(System.in);
+        String choice = scanner.next();
+        ProductMenu productMenu;
+        if(choice.equals("1")) {
+            facade.setnProductCategory(1);
+        } else {
+            facade.setnProductCategory(0);
+        }
+//                facade.getThePerson().showMenu(facade);
+        if(facade.getUserType()) {
+            Offering offering = facade.getThePerson().showMenu(facade);
+            offering.setPerson(loginStatus);
+            offeringList.createNewOffering(offering);
+        }
+//                else {
+        OfferingIterator offeringIterator = offeringList.getOfferingIterator();
+        while(offeringIterator != null) {
+            System.out.println("Bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" closes at "+offeringIterator.getOffering().getBidCloseDate());
+            offeringIterator = offeringIterator.Next();
+        }
+        facade.setOfferingList(offeringList);
+        return facade;
+    }
     public static void main(String[] args) {
         try {
 
@@ -48,60 +80,27 @@ public class main {
             }
             myReader.close();
             facade.setTheProductList(productList);
-//            ProductIterator productIterator = facade.getTheProductList().getProductIterator();
-//            System.out.println("out:"+productIterator.getProduct().getProductName());
-//            System.out.println("out:"+productIterator.hasNext());
-//            if(productIterator == null) {
-//                productIterator = new ProductIterator();
-//            }
-//            while(productIterator != null) {
-//                if(productIterator.getProduct().isProductType() == false) {
-//                    System.out.println(productIterator.getProduct().getProductName());
-//                }
-//                productIterator = productIterator.Next();
-//            }
             Scanner read = new Scanner(System.in);
             System.out.println("Enter User Name:");
             String name = read.next();
             System.out.println("Enter password:");
             String pwd = read.next();
             UserInfoItem loginStatus = facade.login(name, pwd, users);
-            OfferingList offeringList = facade.getOfferingList();
-            if(offeringList == null) {
-                offeringList = new OfferingList();
-            }
-            if (loginStatus != null) {
-                facade.setUserType(loginStatus.isState());
-                System.out.println("Press 1 for Meat menu");
-                System.out.println("Press 2 for Produce menu");
-                Scanner scanner = new Scanner(System.in);
-                String choice = scanner.next();
-                ProductMenu productMenu;
-                if(choice.equals("1")) {
-                    facade.setnProductCategory(1);
-                } else {
-                    facade.setnProductCategory(0);
-                }
-//                facade.getThePerson().showMenu(facade);
-                if(facade.getUserType()) {
-                    Offering offering = facade.getThePerson().showMenu(facade);
-                    offering.setPerson(loginStatus);
-                    offeringList.createNewOffering(offering);
-                }
-//                else {
-                    OfferingIterator offeringIterator = offeringList.getOfferingIterator();
-                    while(offeringIterator != null) {
-                        System.out.println("Bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" closes at "+offeringIterator.getOffering().getBidCloseDate());
-                        offeringIterator = offeringIterator.Next();
-                    }
-//                }
-
-            } else {
+            if(loginStatus == null) {
                 System.out.println("login failed");
+                return;
             }
-        } catch (FileNotFoundException | ParseException e) {
+            while(true) {
+                facade = Session(name, pwd, facade, users, loginStatus);
+            }
+
+        } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
+
+
 }
