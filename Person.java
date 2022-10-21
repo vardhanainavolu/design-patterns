@@ -6,8 +6,8 @@ public class Person {
 		return null;
 	}
 
-	public void showAddButton() {
-
+	public OfferingList showAddButton(Facade facade) throws ParseException {
+		return null;
 	}
 
 	public void showViewButton() {

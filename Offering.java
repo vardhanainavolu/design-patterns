@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class Offering {
 
@@ -7,6 +9,8 @@ public class Offering {
     private Date bidCloseDate;
 
     private UserInfoItem person;
+
+    private ArrayList<Object[]> bids;
 
     public Product getProduct() {
         return product;
@@ -35,5 +39,13 @@ public class Offering {
 
     public void setPerson(UserInfoItem person) {
         this.person = person;
+    }
+
+    public ArrayList<Object[]> getBids() {
+        return bids;
+    }
+
+    public void addBids(UserInfoItem user, Integer bid) {
+        this.bids.add(new Object[] {user, bid});
     }
 }

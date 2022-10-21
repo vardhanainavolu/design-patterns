@@ -7,33 +7,59 @@ import java.util.Scanner;
 
 public class main {
 
-    public static Facade Session(String name, String pwd, Facade facade, ArrayList<UserInfoItem> users, UserInfoItem loginStatus) throws ParseException {
+    public static UserInfoItem Login(Facade facade, ArrayList<UserInfoItem> users) {
+        Scanner read = new Scanner(System.in);
+        System.out.println("Enter User Name:");
+        String name = read.next();
+        System.out.println("Enter password:");
+        String pwd = read.next();
+        UserInfoItem loginStatus = facade.login(name, pwd, users);
+        if(loginStatus == null) {
+            System.out.println("login failed");
+            Login(facade, users);
+            return null;
+        }
+        return loginStatus;
+    }
+    public static Facade Session(Facade facade, ArrayList<UserInfoItem> users) throws ParseException {
+        UserInfoItem loginStatus = Login(facade, users);
         OfferingList offeringList = facade.getOfferingList();
         if(offeringList == null) {
             offeringList = new OfferingList();
         }
         facade.setUserType(loginStatus.isState());
-        System.out.println("Press 1 for Meat menu");
-        System.out.println("Press 2 for Produce menu");
-        Scanner scanner = new Scanner(System.in);
-        String choice = scanner.next();
-        ProductMenu productMenu;
-        if(choice.equals("1")) {
-            facade.setnProductCategory(1);
-        } else {
-            facade.setnProductCategory(0);
-        }
-//                facade.getThePerson().showMenu(facade);
-        if(facade.getUserType()) {
+        if(facade.getUserType() == false) {
+            System.out.println("Press 1 for Meat menu");
+            System.out.println("Press 2 for Produce menu");
+            System.out.println("Press 3 to Logout");
+            Scanner scanner = new Scanner(System.in);
+            String choice = scanner.next();
+
+            if(choice.equals("1")) {
+                facade.setnProductCategory(1);
+            } else if(choice.equals("2")){
+                facade.setnProductCategory(0);
+            } else {
+                Session(facade, users);
+            }
             Offering offering = facade.getThePerson().showMenu(facade);
             offering.setPerson(loginStatus);
             offeringList.createNewOffering(offering);
-        }
-//                else {
-        OfferingIterator offeringIterator = offeringList.getOfferingIterator();
-        while(offeringIterator != null) {
-            System.out.println("Bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" closes at "+offeringIterator.getOffering().getBidCloseDate());
-            offeringIterator = offeringIterator.Next();
+            OfferingIterator offeringIterator = offeringList.getOfferingIterator();
+            while(offeringIterator != null) {
+                System.out.println("Bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" closes at "+offeringIterator.getOffering().getBidCloseDate());
+                offeringIterator = offeringIterator.Next();
+            }
+        } else {
+            System.out.println("Press 1 for checking available bids");
+            System.out.println("Press 2 to Logout");
+            Scanner scanner = new Scanner(System.in);
+            String choice = scanner.next();
+
+            if(choice.equals("2")) {
+                Session(facade, users);
+            }
+            offeringList = facade.getThePerson().showAddButton(facade);
         }
         facade.setOfferingList(offeringList);
         return facade;
@@ -80,18 +106,9 @@ public class main {
             }
             myReader.close();
             facade.setTheProductList(productList);
-            Scanner read = new Scanner(System.in);
-            System.out.println("Enter User Name:");
-            String name = read.next();
-            System.out.println("Enter password:");
-            String pwd = read.next();
-            UserInfoItem loginStatus = facade.login(name, pwd, users);
-            if(loginStatus == null) {
-                System.out.println("login failed");
-                return;
-            }
+
             while(true) {
-                facade = Session(name, pwd, facade, users, loginStatus);
+                facade = Session(facade, users);
             }
 
         } catch (FileNotFoundException e) {
