@@ -4,21 +4,23 @@ import java.util.ArrayList;
 import java.util.Scanner;
 public class Facade {
 
-	private int userType;
+	private boolean userType;
 
 	private Product theSelectedProduct;
 
 	private int nProductCategory;
 
+	private OfferingList offeringList;
+
 	private ClassProductList theProductList;
 
 	private Person thePerson;
 
-	public int getUserType() {
+	public boolean getUserType() {
 		return userType;
 	}
 
-	public void setUserType(int userType) {
+	public void setUserType(boolean userType) {
 		this.userType = userType;
 	}
 
@@ -54,23 +56,23 @@ public class Facade {
 		this.thePerson = thePerson;
 	}
 
-	public boolean login(String userName, String pwd, ArrayList<UserInfoItem> users) {
+	public UserInfoItem login(String userName, String pwd, ArrayList<UserInfoItem> users) {
 		UserInfoItem user;
 		for(int i = 0; i < users.size(); ++i) {
 			user = users.get(i);
 			if(user.getUser().equals(userName)) {
 				if(user.getPassword().equals(pwd)) {
-					if(user.isState() == true) {
-						this.setThePerson(new Buyer());
+					if(user.isState()) {
+						thePerson = new Buyer();
 					} else {
-						this.setThePerson(new Seller());
+						thePerson = new Seller();
 					}
 					System.out.println("Successfully logged in!");
-					return true;
+					return user;
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public void addTrading() {
@@ -117,4 +119,11 @@ public class Facade {
 
 	}
 
+	public OfferingList getOfferingList() {
+		return offeringList;
+	}
+
+	public void setOfferingList(OfferingList offeringList) {
+		this.offeringList = offeringList;
+	}
 }

@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -64,8 +65,13 @@ public class main {
             String name = read.next();
             System.out.println("Enter password:");
             String pwd = read.next();
-            boolean loginStatus = facade.login(name, pwd, users);
-            if (loginStatus) {
+            UserInfoItem loginStatus = facade.login(name, pwd, users);
+            OfferingList offeringList = facade.getOfferingList();
+            if(offeringList == null) {
+                offeringList = new OfferingList();
+            }
+            if (loginStatus != null) {
+                facade.setUserType(loginStatus.isState());
                 System.out.println("Press 1 for Meat menu");
                 System.out.println("Press 2 for Produce menu");
                 Scanner scanner = new Scanner(System.in);
@@ -76,11 +82,24 @@ public class main {
                 } else {
                     facade.setnProductCategory(0);
                 }
-                facade.getThePerson().showMenu(facade);
+//                facade.getThePerson().showMenu(facade);
+                if(facade.getUserType()) {
+                    Offering offering = facade.getThePerson().showMenu(facade);
+                    offering.setPerson(loginStatus);
+                    offeringList.createNewOffering(offering);
+                }
+//                else {
+                    OfferingIterator offeringIterator = offeringList.getOfferingIterator();
+                    while(offeringIterator != null) {
+                        System.out.println("Bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" closes at "+offeringIterator.getOffering().getBidCloseDate());
+                        offeringIterator = offeringIterator.Next();
+                    }
+//                }
+
             } else {
                 System.out.println("login failed");
             }
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | ParseException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }

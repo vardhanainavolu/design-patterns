@@ -2,12 +2,12 @@ public class OfferingIterator {
 
 	private OfferingList offeringList;
 
+	private Offering offering;
+
+	private OfferingIterator offeringIterator;
+
 	public boolean hasNext() {
 		return false;
-	}
-
-	public Offering Next() {
-		return null;
 	}
 
 	public void MoveToHead() {
@@ -18,4 +18,19 @@ public class OfferingIterator {
 
 	}
 
+	public Offering getOffering() {
+		return offering;
+	}
+
+	public void setOffering(Offering offering) {
+		this.offering = offering;
+	}
+
+	public OfferingIterator Next() {
+		return offeringIterator;
+	}
+
+	public void setNext(OfferingIterator offeringIterator) {
+		this.offeringIterator = offeringIterator;
+	}
 }

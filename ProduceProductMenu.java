@@ -6,7 +6,7 @@ public class ProduceProductMenu implements ProductMenu {
 		if(productIterator == null) {
 			productIterator = new ProductIterator();
 		}
-		while(productIterator.hasNext()) {
+		while(productIterator != null) {
 			if(productIterator.getProduct().isProductType() == false) {
 				System.out.println(productIterator.getProduct().getProductName());
 			}
@@ -14,8 +14,8 @@ public class ProduceProductMenu implements ProductMenu {
 		}
 	}
 
-	public void showAddButton() {
-
+	public Offering showAddButton() {
+		return null;
 	}
 
 	public void showRadioButton() {

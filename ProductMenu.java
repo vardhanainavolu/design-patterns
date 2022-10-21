@@ -1,8 +1,10 @@
+import java.text.ParseException;
+
 public interface ProductMenu {
 
 	public abstract void showMenu();
 
-	public abstract void showAddButton();
+	public abstract Offering showAddButton() throws ParseException;
 
 	public abstract void showViewButton();
 

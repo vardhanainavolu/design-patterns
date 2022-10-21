@@ -26,7 +26,7 @@ public class ClassProductList {
 			newElement.setNext(iterator);
 		}
 		newElement.setHasNext(true);
-		System.out.println(newElement.getProduct().getProductName());
+//		System.out.println(newElement.getProduct().getProductName());
 //		if(newElement.hasNext())
 //			System.out.println(" next:"+newElement.Next().getProduct().getProductName());
 		this.setProductIterator(newElement);

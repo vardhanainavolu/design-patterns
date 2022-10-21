@@ -1,7 +1,9 @@
+import java.text.ParseException;
+
 public class Person {
 
-	public void showMenu(Facade facade) {
-
+	public Offering showMenu(Facade facade) throws ParseException {
+		return null;
 	}
 
 	public void showAddButton() {
