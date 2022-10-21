@@ -19,18 +19,36 @@ public class main {
         UserInfoItem loginStatus = facade.login(name, pwd, users);
         if(loginStatus == null) {
             System.out.println("login failed");
-            Login(facade);
-            return null;
+            return Login(facade);
         }
         return loginStatus;
     }
     public static Facade Session(Facade facade) throws ParseException {
         UserInfoItem loginStatus = Login(facade);
+        facade.setUserInfoItem(loginStatus);
         OfferingList offeringList = facade.getOfferingList();
         if(offeringList == null) {
             offeringList = new OfferingList();
         }
         facade.setUserType(loginStatus.isState());
+        Random rand = new Random();
+        int randInt = rand.nextInt(1000);
+        ReminderVisitor reminderVisitor = new ReminderVisitor();
+        if(randInt%3 == 0) {
+            Object obj[] = reminderVisitor.visitFacade(facade);
+            facade.setOfferingList((OfferingList) obj[0]);
+            UserInfoItem tempUser = (UserInfoItem) obj[1];
+            Product product = (Product) obj[2];
+            if (tempUser != null) {
+//                System.out.println("in:"+tempUser.getUser());
+                for (int i = 0; i < users.size(); ++i) {
+                    if (users.get(i).getUser().equals(tempUser.getUser())) {
+//                        System.out.println("in2:"+users.get(i).getUser());
+                        users.get(i).addProducts(product);
+                    }
+                }
+            }
+        }
         if(facade.getUserType() == false) {
             System.out.println("Press 1 for Meat menu");
             System.out.println("Press 2 for Produce menu");
@@ -50,7 +68,7 @@ public class main {
             offeringList.createNewOffering(offering);
             OfferingIterator offeringIterator = offeringList.getOfferingIterator();
             while(offeringIterator != null) {
-                System.out.println("Bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" closes at "+offeringIterator.getOffering().getBidCloseDate());
+                System.out.println(offeringIterator.getOffering().getProduct().getProductName()+" offered by "+offeringIterator.getOffering().getPerson().getUser()+" closes at "+offeringIterator.getOffering().getBidCloseDate());
                 offeringIterator = offeringIterator.Next();
             }
         } else {
@@ -63,31 +81,23 @@ public class main {
             if(choice.equals("3")) {
                 Session(facade);
             } else if(choice.equals("2")) {
-                ArrayList<Product> products = loginStatus.getProducts();
+                ArrayList<Product> products = null;
+                for(int i = 0; i < users.size(); ++i) {
+                    if(users.get(i).getUser().equals(loginStatus.getUser())) {
+                        products = users.get(i).getProducts();
+                    }
+                }
                 if(products.size() == 0) {
                     System.out.println("No goods are owned by you");
                 }
                 for(int i = 0; i < products.size(); ++i) {
-                    System.out.println(products.get(i));
+                    System.out.println(products.get(i).getProductName());
                 }
             } else {
                 offeringList = facade.getThePerson().showAddButton(facade);
             }
         }
         facade.setOfferingList(offeringList);
-        Random rand = new Random();
-        int randInt = rand.nextInt(1000);
-        ReminderVisitor reminderVisitor = new ReminderVisitor();
-        Object obj[] = reminderVisitor.visitFacade(facade);
-        facade.setOfferingList((OfferingList)obj[0]);
-        UserInfoItem tempUser = (UserInfoItem) obj[1];
-        for(int i = 0; i < users.size(); ++i) {
-            if(users.get(i).getUser().equals(tempUser.getUser())) {
-                for(int j = 0; j < tempUser.getProducts().size(); ++j) {
-                    users.get(i).addProducts(tempUser.getProducts().get(j));
-                }
-            }
-        }
         return facade;
     }
     public static void main(String[] args) {

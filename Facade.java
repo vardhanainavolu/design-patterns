@@ -6,6 +6,8 @@ public class Facade {
 
 	private boolean userType;
 
+	private UserInfoItem userInfoItem;
+
 	private Product theSelectedProduct;
 
 	private int nProductCategory;
@@ -125,5 +127,13 @@ public class Facade {
 
 	public void setOfferingList(OfferingList offeringList) {
 		this.offeringList = offeringList;
+	}
+
+	public UserInfoItem getUserInfoItem() {
+		return userInfoItem;
+	}
+
+	public void setUserInfoItem(UserInfoItem userInfoItem) {
+		this.userInfoItem = userInfoItem;
 	}
 }

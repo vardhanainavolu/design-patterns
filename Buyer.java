@@ -50,7 +50,7 @@ public class Buyer extends Person {
 		 Integer selection = read.nextInt();
 		 System.out.println("Enter the bid amount");
 		 Integer bid = read.nextInt();
-		 offeringIterator.getOffering().addBids(offeringIterator.getOffering().getPerson(), bid);
+		 offeringIterator.getOffering().addBids(facade.getUserInfoItem(), bid);
 		 System.out.println("Bid sucessfully placed!");
 		 return offeringList;
 	 }	public ProductMenu CreateProductMenu() {
