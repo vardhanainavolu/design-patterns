@@ -1,8 +1,12 @@
+import java.util.ArrayList;
+
 public class UserInfoItem {
 
     private String user;
 
     private String password;
+
+    private ArrayList<Product> products = new ArrayList<>();
 
     public boolean isState() {
         return state;
@@ -33,5 +37,13 @@ public class UserInfoItem {
         setPassword(pwd);
         setUser(user);
         setState(state);
+    }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public void addProducts(Product product) {
+        this.products.add(product);
     }
 }

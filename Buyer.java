@@ -28,14 +28,15 @@ public class Buyer extends Person {
 		 boolean flag = false;
 		 HashMap<Integer, OfferingIterator> mp = new HashMap<Integer, OfferingIterator>();
 		 while(offeringIterator != null) {
-			 System.out.println("Press "+cnt+ " to bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" which closes at "+offeringIterator.getOffering().getBidCloseDate());
+			 System.out.println("Press "+cnt+ ": to bid for "+offeringIterator.getOffering().getProduct().getProductName()+" by "+offeringIterator.getOffering().getPerson().getUser()+" which closes at "+offeringIterator.getOffering().getBidCloseDate());
 			 mp.put(cnt, offeringIterator);
 			 offeringIterator = offeringIterator.Next();
 			 cnt++;
 			 flag = true;
 		 }
+		 offeringIterator = offeringList.getOfferingIterator();
 		 Scanner read = new Scanner(System.in);
-		 for(int i = 0; i < cnt; ++i) {
+		 for(int i = 0; i < cnt-1; ++i) {
 			 offeringIterator = offeringIterator.Next();
 			 if(offeringList == null) {
 				 System.out.println("Selection is out of bounds");
@@ -50,6 +51,7 @@ public class Buyer extends Person {
 		 System.out.println("Enter the bid amount");
 		 Integer bid = read.nextInt();
 		 offeringIterator.getOffering().addBids(offeringIterator.getOffering().getPerson(), bid);
+		 System.out.println("Bid sucessfully placed!");
 		 return offeringList;
 	 }	public ProductMenu CreateProductMenu() {
 		return null;

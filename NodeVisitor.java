@@ -8,8 +8,8 @@ public class NodeVisitor {
 
 	}
 
-	public void visitFacade(Facade facade) {
-
+	public Object visitFacade(Facade facade) {
+		return null;
 	}
 
 }

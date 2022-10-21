@@ -10,7 +10,7 @@ public class Offering {
 
     private UserInfoItem person;
 
-    private ArrayList<Object[]> bids;
+    private ArrayList<Object[]> bids = new ArrayList<>();
 
     public Product getProduct() {
         return product;

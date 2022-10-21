@@ -3,11 +3,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 public class main {
 
-    public static UserInfoItem Login(Facade facade, ArrayList<UserInfoItem> users) {
+    public static ArrayList<UserInfoItem> users = new ArrayList<>();
+    public static UserInfoItem Login(Facade facade) {
         Scanner read = new Scanner(System.in);
         System.out.println("Enter User Name:");
         String name = read.next();
@@ -16,13 +19,13 @@ public class main {
         UserInfoItem loginStatus = facade.login(name, pwd, users);
         if(loginStatus == null) {
             System.out.println("login failed");
-            Login(facade, users);
+            Login(facade);
             return null;
         }
         return loginStatus;
     }
-    public static Facade Session(Facade facade, ArrayList<UserInfoItem> users) throws ParseException {
-        UserInfoItem loginStatus = Login(facade, users);
+    public static Facade Session(Facade facade) throws ParseException {
+        UserInfoItem loginStatus = Login(facade);
         OfferingList offeringList = facade.getOfferingList();
         if(offeringList == null) {
             offeringList = new OfferingList();
@@ -40,7 +43,7 @@ public class main {
             } else if(choice.equals("2")){
                 facade.setnProductCategory(0);
             } else {
-                Session(facade, users);
+                Session(facade);
             }
             Offering offering = facade.getThePerson().showMenu(facade);
             offering.setPerson(loginStatus);
@@ -52,16 +55,39 @@ public class main {
             }
         } else {
             System.out.println("Press 1 for checking available bids");
-            System.out.println("Press 2 to Logout");
+            System.out.println("Press 2 for checking owned goods");
+            System.out.println("Press 3 to Logout");
             Scanner scanner = new Scanner(System.in);
             String choice = scanner.next();
 
-            if(choice.equals("2")) {
-                Session(facade, users);
+            if(choice.equals("3")) {
+                Session(facade);
+            } else if(choice.equals("2")) {
+                ArrayList<Product> products = loginStatus.getProducts();
+                if(products.size() == 0) {
+                    System.out.println("No goods are owned by you");
+                }
+                for(int i = 0; i < products.size(); ++i) {
+                    System.out.println(products.get(i));
+                }
+            } else {
+                offeringList = facade.getThePerson().showAddButton(facade);
             }
-            offeringList = facade.getThePerson().showAddButton(facade);
         }
         facade.setOfferingList(offeringList);
+        Random rand = new Random();
+        int randInt = rand.nextInt(1000);
+        ReminderVisitor reminderVisitor = new ReminderVisitor();
+        Object obj[] = reminderVisitor.visitFacade(facade);
+        facade.setOfferingList((OfferingList)obj[0]);
+        UserInfoItem tempUser = (UserInfoItem) obj[1];
+        for(int i = 0; i < users.size(); ++i) {
+            if(users.get(i).getUser().equals(tempUser.getUser())) {
+                for(int j = 0; j < tempUser.getProducts().size(); ++j) {
+                    users.get(i).addProducts(tempUser.getProducts().get(j));
+                }
+            }
+        }
         return facade;
     }
     public static void main(String[] args) {
@@ -70,7 +96,6 @@ public class main {
             // Scanning buyers list for details
             File myObj = new File("BuyerInfo.txt");
             Scanner myReader = new Scanner(myObj);
-            ArrayList<UserInfoItem> users = new ArrayList<>();
             Facade facade = new Facade();
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -108,7 +133,7 @@ public class main {
             facade.setTheProductList(productList);
 
             while(true) {
-                facade = Session(facade, users);
+                facade = Session(facade);
             }
 
         } catch (FileNotFoundException e) {
